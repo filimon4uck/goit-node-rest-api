@@ -3,7 +3,7 @@ import HttpError from "../helpers/HttpError.js"
 import controllerWrapper from "../decorators/controllerWrapper.js";
 
 const  getAllContacts = async (req, res) => {
-  const result = await contactsServices.listContacts();
+  const result =  await contactsServices.listContacts();
   res.status(200).json(result);
 };
 
@@ -41,6 +41,14 @@ const updateContact = async(req, res) => {
      }
     res.status(200).json(result);
 };
+const updateStatusContact = async (req, res) => {
+  const { id } = req.params;
+    const result = await contactsServices.updateContact(id, req.body);
+    if (!result) {
+      throw HttpError(404, "Not found")
+     }
+    res.status(200).json(result);
+ }
 
 export default {
   getAllContacts: controllerWrapper(getAllContacts),
@@ -48,4 +56,5 @@ export default {
   deleteContact: controllerWrapper(deleteContact),
   createContact: controllerWrapper(createContact),
   updateContact: controllerWrapper(updateContact),
+  updateStatusContact:controllerWrapper(updateStatusContact),
 };
