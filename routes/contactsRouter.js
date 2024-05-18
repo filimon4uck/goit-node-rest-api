@@ -11,9 +11,9 @@ contactsRouter.get("/", contactsControllers.getAllContacts);
 
 contactsRouter.get("/:id", isValidId, contactsControllers.getOneContact);
 
-contactsRouter.delete("/:id", contactsControllers.deleteContact);
+contactsRouter.delete("/:id", isValidId, contactsControllers.deleteContact);
 
-contactsRouter.patch("/:id/favorite", isValidId, isEmptyBody, isValidBody.updateValid, contactsControllers.updateContact)
+contactsRouter.patch("/:id/favorite", isValidId, isEmptyBody, isValidBody.updateStatusValid, contactsControllers.updateContact)
 
 contactsRouter.post("/",isEmptyBody ,isValidBody.createValid,contactsControllers.createContact);
 
