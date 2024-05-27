@@ -7,7 +7,7 @@ const authenticate = async (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization) {
-    return next(HttpError(401, "Email or password is wrong"));
+    return next(HttpError(401, "Not authorized"));
   }
   const [bearer ,token] = authorization.split(" ");
 

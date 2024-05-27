@@ -8,7 +8,7 @@ const getAllContacts = async (req, res) => {
   const skip = (page - 1) * limit;
   const settings = { skip, limit};
   const filter = { owner, ...(favorite && { favorite }) };
-  const fields = "";
+  const fields = "-owner";
 
   const result = await contactsServices.listContacts({ filter, fields, settings });
   const total = await contactsServices.countContacts();
@@ -53,8 +53,9 @@ const updateContact = async(req, res) => {
     res.status(200).json(result);
 };
 const updateStatusContact = async (req, res) => {
-  const { id } = req.params;
-    const result = await contactsServices.updateContact(id, req.body);
+   const { id: _id } = req.params;
+  const { _id: owner } = req.user;
+    const result = await contactsServices.updateContact({_id,owner}, req.body);
     if (!result) {
       throw HttpError(404, "Not found")
      }

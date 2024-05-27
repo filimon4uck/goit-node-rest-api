@@ -3,7 +3,7 @@ import Contact from "../models/Contact.js"
 
 const listContacts = (search = {}) => { 
   const { filter = {}, fields = "", settings = {} } = search;
-  return Contact.find(filter, fields, settings).populate("owner", "email")
+  return Contact.find(filter, fields, settings)
 };
 
 const countContacts = filter => Contact.countDocuments(filter);
