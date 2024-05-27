@@ -9,13 +9,13 @@ const authenticate = async (req, res, next) => {
   if (!authorization) {
     return next(HttpError(401, "Not authorized"));
   }
-  const [bearer ,token] = authorization.split(" ");
+  const [bearer, token] = authorization.split(" ");
 
   try {
     const { id } = verifyToken(token);
     const user = await findUser({ _id: id });
 
-    if (!user || !user.token) {
+    if (!user || !user.token || user.token !==token) {
       return next(HttpError(401, "Not authorized"));
     }
 
