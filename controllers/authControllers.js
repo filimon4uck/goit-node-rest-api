@@ -17,8 +17,10 @@ const signup = async(req, res) => {
   const newUser = await authServices.saveUser(req.body);
 
   res.status(201).json({
-    email: newUser.email,
-    ssubscription: newUser.subscription,
+    user: {
+      email: newUser.email,
+      ssubscription: newUser.subscription,
+    }
     
   });
 }
