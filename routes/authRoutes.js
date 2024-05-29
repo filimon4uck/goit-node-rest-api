@@ -12,7 +12,7 @@ authRouter.post("/login", isEmptyBody, isValidBody.authSigninValid, authControll
 authRouter.get("/current", authenticate, authControllers.getCurrent);
 authRouter.post("/logout", authenticate, authControllers.signout);
 authRouter.patch("/", authenticate, isEmptyBody, isValidBody.updateSubscriptionValid, authControllers.updateSubscription);
-authRouter.patch("/avatars", upload.single("avatar"), authenticate, isEmptyBody , authControllers.updateAvatar )
+authRouter.patch("/avatars", upload.single("avatar"), authenticate,authControllers.updateAvatar )
 
 
 export default authRouter;
