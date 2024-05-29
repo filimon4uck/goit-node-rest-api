@@ -2,6 +2,13 @@ import * as authServices from "../services/authServices.js";
 import controllerWrapper from "../decorators/controllerWrapper.js";
 import HttpError from "../helpers/HttpError.js";
 import compareHash from "../helpers/compareHash.js";
+import gravatar from "gravatar";
+import fs from "fs/promises";
+import path from "path";
+import Jimp from "jimp";
+
+const avatarsPath = path.resolve("public", "avatars");
+
 
 import { createToken } from "../helpers/jwt.js";
 
@@ -14,12 +21,14 @@ const signup = async(req, res) => {
     throw HttpError(409, "Email in use");
   }
 
-  const newUser = await authServices.saveUser(req.body);
+  const newUser = await authServices.saveUser({ ...req.body, avatarURL: gravatar.url(req.body.email, { s: "250", r: "pg", d: "identicon" },
+    false) });
 
   res.status(201).json({
     user: {
       email: newUser.email,
-      ssubscription: newUser.subscription,
+      subscription: newUser.subscription,
+      avatarURL : newUser.avatarURL
     }
     
   });
@@ -72,6 +81,34 @@ const updateSubscription = async (req, res) => {
   res.status(200).json({ email, subscription });
 }
 
+const updateAvatar = async (req, res) => {
+  const { _id } = req.user;
+  const { path: tempFilePath, filename, mimetype } = req.file;
+
+if (
+      !["image/bmp", "image/jpeg", "image/png", "image/jpg"].includes(mimetype)
+    ) {
+      throw HttpError(400, "Invalid image format, must be jpeg, png, bmp");
+    }
+
+    if (!tempFilePath) {
+      throw HttpError(400, "No file uploaded");
+  }
+  const avatar = await Jimp.read(tempFilePath);
+  const avatarName = `${_id}_${Date.now()}.jpg`
+  const newAvatarPath = path.join(avatarsPath, avatarName);
+  await avatar.cover(250,250).writeAsync(newAvatarPath);
+  await fs.unlink(tempFilePath);
+  const avatarRelativePath = path.join('avatars', filename);
+   const result =  await authServices.updateUser({ _id }, { avatarURL: avatarRelativePath });
+
+  res.status(200).json(
+    {
+     avatarUrl:result.avatarURL
+    }
+  )
+}
+
 const signout = async (req, res) => { 
   const { _id } = req.user;
   await authServices.updateUser({ _id }, { token: "" });
@@ -82,5 +119,6 @@ export default {
   signin: controllerWrapper(signin),
   getCurrent: controllerWrapper(getCurrent),
   signout: controllerWrapper(signout),
-  updateSubscription: controllerWrapper(updateSubscription)
+  updateSubscription: controllerWrapper(updateSubscription),
+  updateAvatar:controllerWrapper(updateAvatar)
 }

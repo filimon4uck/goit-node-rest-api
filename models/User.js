@@ -17,6 +17,9 @@ const userSchema = new Schema({
     enum: ENUM_SUBSCRIPTIONS,
     default: ENUM_SUBSCRIPTIONS[0],
   },
+  avatarURL: {
+      type:String
+    },
   token:String
 
 }, { versionKey: false });
