@@ -83,17 +83,17 @@ const updateSubscription = async (req, res) => {
 
 const updateAvatar = async (req, res) => {
   const { _id } = req.user;
+  if (!req.file) {
+    throw HttpError(400, "No file uploaded");
+  }
   const { path: tempFilePath, filename, mimetype } = req.file;
-
 if (
       !["image/bmp", "image/jpeg", "image/png", "image/jpg"].includes(mimetype)
     ) {
       throw HttpError(400, "Invalid image format, must be jpeg, png, bmp");
     }
 
-    if (!tempFilePath) {
-      throw HttpError(400, "No file uploaded");
-  }
+  
   const avatar = await Jimp.read(tempFilePath);
   const avatarName = `${_id}_${Date.now()}.jpg`
   const newAvatarPath = path.join(avatarsPath, avatarName);
