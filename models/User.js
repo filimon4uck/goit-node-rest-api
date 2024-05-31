@@ -20,8 +20,19 @@ const userSchema = new Schema({
   avatarURL: {
       type:String
     },
-  token:String
 
+  token:{
+  type:String,
+  default: null
+},
+  verify:{
+    type: Boolean,
+    default:false
+  },
+  verificationToken:{
+    type: String,
+    default:null,
+  }
 }, { versionKey: false });
 
 userSchema.post("save", handleSaveError);

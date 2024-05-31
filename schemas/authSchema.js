@@ -14,3 +14,7 @@ export const authSigninSchema = Joi.object({
 export const updateSubscriptionSchema = Joi.object({
   subscription:Joi.string().valid(...ENUM_SUBSCRIPTIONS)
 }) 
+
+export const authEmailSchema = Joi.object({
+  email: Joi.string().pattern(emailRegexp).required()
+}); 

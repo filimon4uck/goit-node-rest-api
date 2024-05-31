@@ -8,7 +8,8 @@ const updateStatusValid = validateBody(contactsSchemas.updateStatusContactSchema
 
 const authSignupValid = validateBody(authSchemas.authSignupSchema);
 const authSigninValid = validateBody(authSchemas.authSigninSchema);
+const authVerifyEmailValid = validateBody(authSchemas.authEmailSchema);
 
 const updateSubscriptionValid = validateBody(authSchemas.updateSubscriptionSchema);
  
-export default { createValid, updateValid, updateStatusValid, authSignupValid, authSigninValid, updateSubscriptionValid};
+export default { createValid, updateValid, updateStatusValid, authSignupValid, authSigninValid, updateSubscriptionValid, authVerifyEmailValid};

@@ -5,6 +5,7 @@ const isEmptyBody = (req, res, next) => {
   if (!length) {
     return next(HttpError(400, "Body must have at least one field"));
   }
+  console.log(req.body)
     
   next();
 }
