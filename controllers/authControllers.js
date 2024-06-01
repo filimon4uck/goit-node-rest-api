@@ -139,11 +139,11 @@ const updateAvatar = async (req, res) => {
     throw HttpError(400, "No file uploaded");
   }
   const { path: tempFilePath, filename, mimetype } = req.file;
-if (
-      !["image/bmp", "image/jpeg", "image/png", "image/jpg"].includes(mimetype)
-    ) {
-      throw HttpError(400, "Invalid image format, must be jpeg, png, bmp");
-    }
+  if (
+    !["image/bmp", "image/jpeg", "image/png", "image/jpg"].includes(mimetype)
+  ) {
+    throw HttpError(400, "Invalid image format, must be jpeg, png, bmp");
+  }
 
   
   const avatar = await Jimp.read(tempFilePath);
