@@ -1,6 +1,6 @@
 import "dotenv/config";
 import sgMail from '@sendgrid/mail';
-import HttpError from "./HttpError";
+import HttpError from "./HttpError.js";
 export const sendEmail = async (msg) => {
   try {
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
